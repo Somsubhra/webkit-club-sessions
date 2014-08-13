@@ -1,4 +1,4 @@
-var apiRoot = "http://localhost:8080"
+var apiRoot = "http://localhost:8080/api";
 
 $(function() {
 	$.getJSON(apiRoot, function(data) {

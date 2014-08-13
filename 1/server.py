@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-''' fake-api.py: A fake API to simulate a cricket match '''
+''' server.py: A server with a fake API to simulate a cricket match '''
 __author__ = 'Somsubhra Bairi'
 __email__ = 'mail@somsubhra.com'
 
@@ -58,7 +58,9 @@ class APIHandler(BaseHTTPRequestHandler):
 
     #Handler for the GET requests
     def do_GET(self):
+
         if self.path == '/api':
+            # API Called
             self.send_response(200)
             self.send_header('Content-type','text/json')
             self.end_headers()
@@ -67,7 +69,11 @@ class APIHandler(BaseHTTPRequestHandler):
             self.wfile.write(dumps(scores))
             return
         else:
-            self.path = '/index.html'
+            # Default operation for any other path called
+
+            # Set index.html as the default file
+            if self.path == "/":
+                self.path = "/index.html"
 
             try:
                 #Check the file extension required and
@@ -75,12 +81,6 @@ class APIHandler(BaseHTTPRequestHandler):
                 sendReply = False
                 if self.path.endswith(".html"):
                     mimetype='text/html'
-                    sendReply = True
-                if self.path.endswith(".jpg"):
-                    mimetype='image/jpg'
-                    sendReply = True
-                if self.path.endswith(".gif"):
-                    mimetype='image/gif'
                     sendReply = True
                 if self.path.endswith(".js"):
                     mimetype='application/javascript'
@@ -100,6 +100,7 @@ class APIHandler(BaseHTTPRequestHandler):
                 return
 
             except IOError:
+                # File not found
                 self.send_error(404,'File Not Found: %s' % self.path)
 
 try:
