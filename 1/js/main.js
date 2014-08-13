@@ -1,7 +1,7 @@
 // All variable declarations
 var apiRoot = "http://localhost:8080/api";
 
-var overs = 10;
+var overs = 50;
 
 var ctx = document.getElementById("score-chart").getContext("2d");
 ctx.canvas.width  = window.innerWidth;
@@ -14,8 +14,8 @@ var scoreChart = new Chart(ctx);
 var labels = [];
 
 var graphData = {
-	
-	labels: labels,	
+
+	labels: labels,
 
 	datasets : [
 		{
@@ -33,7 +33,7 @@ var graphData = {
 			data : []
 		}
 	]
-}; 
+};
 
 for(var i = 1; i <= overs; i++) {
 	labels.push(i.toString());
@@ -62,3 +62,4 @@ $(function() {
 	setInterval(fetchScores, 1000);
 	scoreChart.Line(graphData, optionsNoAnimation);
 });
+

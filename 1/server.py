@@ -14,8 +14,8 @@ from os import curdir, sep
 
 # Define all constants
 PORT_NUMBER = 8080
-OVERS = 10
-OVER_DURATION = 5
+OVERS = 50
+OVER_DURATION = 1
 
 # Global variables
 scores = [{"name": "A", "runs": []}, {"name": "B", "runs": []}]
