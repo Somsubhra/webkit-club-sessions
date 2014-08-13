@@ -10,6 +10,7 @@ from json import dumps
 from threading import Timer
 from random import random
 from math import floor
+from os import curdir, sep
 
 # Define all constants
 PORT_NUMBER = 8080
@@ -57,13 +58,49 @@ class APIHandler(BaseHTTPRequestHandler):
 
     #Handler for the GET requests
     def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type','text/json')
-        self.end_headers()
+        if self.path == '/api':
+            self.send_response(200)
+            self.send_header('Content-type','text/json')
+            self.end_headers()
 
-        # Send the json response
-        self.wfile.write(dumps(scores))
-        return
+            # Send the json response
+            self.wfile.write(dumps(scores))
+            return
+        else:
+            self.path = '/index.html'
+
+            try:
+                #Check the file extension required and
+                #set the right mime type
+                sendReply = False
+                if self.path.endswith(".html"):
+                    mimetype='text/html'
+                    sendReply = True
+                if self.path.endswith(".jpg"):
+                    mimetype='image/jpg'
+                    sendReply = True
+                if self.path.endswith(".gif"):
+                    mimetype='image/gif'
+                    sendReply = True
+                if self.path.endswith(".js"):
+                    mimetype='application/javascript'
+                    sendReply = True
+                if self.path.endswith(".css"):
+                    mimetype='text/css'
+                    sendReply = True
+
+                if sendReply == True:
+                    #Open the static file requested and send it
+                    f = open(curdir + sep + self.path) 
+                    self.send_response(200)
+                    self.send_header('Content-type',mimetype)
+                    self.end_headers()
+                    self.wfile.write(f.read())
+                    f.close()
+                return
+
+            except IOError:
+                self.send_error(404,'File Not Found: %s' % self.path)
 
 try:
     #Create a web server and define the handler to manage the
