@@ -18,7 +18,7 @@ OVERS = 10
 OVER_DURATION = 5
 
 # Global variables
-scores = [{"name": "A", "runs": 0, "overs": 0}, {"name": "B", "runs": 0, "overs": 0}]
+scores = [{"name": "A", "runs": []}, {"name": "B", "runs": []}]
 number_of_overs = 0
 current_batting_team = 0
 
@@ -33,8 +33,9 @@ def generate_scores():
     global current_batting_team
 
     # End of match
-    if number_of_overs == OVERS * 2 or scores[1]["runs"] > scores[0]["runs"]:
-        return
+    if len(scores[0]["runs"]) > 0 and len(scores[1]["runs"]) > 0:
+        if number_of_overs == OVERS * 2 or scores[1]["runs"][-1] > scores[0]["runs"][-1]:
+            return
 
     # One team finished batting
     if number_of_overs == OVERS:
@@ -44,11 +45,18 @@ def generate_scores():
     number_of_overs += 1
 
     # Generate random number of runs in an over
-    runs_in_over = floor(random() * 12)
+    runs_in_over = int(floor(random() * 12))
 
     # Set the score in dictionary
-    scores[current_batting_team]["runs"] += runs_in_over
-    scores[current_batting_team]["overs"] += 1
+    score_array = scores[current_batting_team]["runs"]
+
+    previous_runs = 0
+
+    if len(score_array) > 0:
+        previous_runs = score_array[-1]
+
+    current_runs = runs_in_over + previous_runs
+    score_array.append(current_runs)
 
 # Call the score generator
 generate_scores()

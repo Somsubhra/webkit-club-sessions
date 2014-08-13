@@ -35,7 +35,7 @@ var graphData = {
 	]
 }; 
 
-for(var i = 1 ; i <= overs ; i++) {
+for(var i = 1; i <= overs; i++) {
 	labels.push(i.toString());
 	graphData.datasets[0].data[i] = 0;
 	graphData.datasets[1].data[i] = 0;
@@ -45,8 +45,13 @@ for(var i = 1 ; i <= overs ; i++) {
 function fetchScores() {
 	$.getJSON(apiRoot, function(data) {
 
-		graphData.datasets[0].data[data[0].overs] = data[0].runs;
-		graphData.datasets[1].data[data[1].overs] = data[1].runs;
+		for(var i = 0; i < data[0].runs.length; i++) {
+			graphData.datasets[0].data[i] = data[0].runs[i];
+		}
+
+		for(var i = 0; i < data[1].runs.length; i++) {
+			graphData.datasets[1].data[i] = data[1].runs[i];
+		}
 
 		scoreChart.Line(graphData, optionsNoAnimation);
 	});
